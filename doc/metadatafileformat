@@ -24,7 +24,7 @@ Text:
 * str: String
 * skippable: Boolean
 * effect?: Integer
-* speed: Float
+* speed?: Float
 
 Event types:
 * 1 = Chat Bubble
