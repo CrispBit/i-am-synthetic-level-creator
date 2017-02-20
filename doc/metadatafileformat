@@ -22,7 +22,7 @@ Event:
 
 Text:
 * str: String
-* skippable: Boolean
+* skippable?: Boolean
 * effect?: Integer
 * speed?: Float
 
