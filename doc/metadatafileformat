@@ -1,4 +1,5 @@
 format is in JSON
+A question mark after a property means the property is optional
 
 root object:
 * name: String
@@ -15,4 +16,19 @@ Spritesheet:
 
 Event:
 * type: Integer
-TODO
+* atX: Integer
+* atY: Integer
+* text: Array of Texts
+
+Text:
+* str: String
+* skippable: Boolean
+* effect?: Integer
+* speed: Float
+
+Event types:
+* 1 = Chat Bubble
+
+Text effects
+* 1 = Shake
+* 2 = Spin
