@@ -1,0 +1,19 @@
+#editor {
+    /* display: flex; */
+    display: none;
+}
+
+#left, #right {
+    width: 20%;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+
+    text-align: center;
+    padding: 10px;
+}
+
+#view {
+    width: 60%;
+}

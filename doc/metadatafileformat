@@ -1,0 +1,18 @@
+format is in JSON
+
+root object:
+* name: String
+* levelfile: String (path to levelfile)
+* spritesheet: Spritesheet
+* events: Array of Events
+
+Spritesheet:
+* path: String
+* sprite_width: Integer
+* sprite_height: Integer
+* rows: Integer
+* columns: Integer
+
+Event:
+* type: Integer
+TODO
