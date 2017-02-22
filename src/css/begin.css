@@ -9,3 +9,7 @@
     border-width: 1px;
     border-color: black;
 }
+
+#add-spritesheet-text {
+    color: red;
+}

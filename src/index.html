@@ -9,9 +9,10 @@
     </head>
     <body>
         <div id="begin">
-            Spritesheet <input type="file" id="spritesheet-import" />
+            <span id="add-spritesheet-text" hidden>Please supply a spritesheet<br/></span>
+            Spritesheet <input type="file" id="spritesheet-input" accept="image/*" />
             <br/>
-            Background <input type="file" id="bg-import" />
+            Background <input type="file" id="bg-input" accept="image/*" />
             <br/>
             <br/>
             <button id="createnew">Create New</button>
@@ -19,9 +20,9 @@
             <br/>
             Or Import Existing
             <br/>
-            Levelfile <input type="file" id="levelfile-import" />
+            Levelfile <input type="file" id="levelfile-input" />
             <br/>
-            Metadata <input type="file" id="metadata-import" />
+            Metadata <input type="file" id="metadata-input" accept=".json" />
             <br/>
             <button id="import">Import</button>
         </div>
