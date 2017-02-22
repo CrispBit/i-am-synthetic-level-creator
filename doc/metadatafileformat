@@ -5,6 +5,7 @@ root object:
 * name: String
 * levelfile: String (path to levelfile)
 * spritesheet: Spritesheet
+* background: String (path to background image)
 * events: Array of Events
 
 Spritesheet:
