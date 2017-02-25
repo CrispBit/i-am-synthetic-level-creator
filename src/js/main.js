@@ -23,6 +23,9 @@ window.addEventListener("load", function() {
     okButton.addEventListener("click", function() {
         
         var spritesheetConfig = document.getElementById("spritesheet-config"),
+            left = document.getElementById("left"),
+            right = document.getElementById("right"),
+            view = document.getElementById("view"),
             spritesheet = {
                 rows: document.getElementById("rows").value,
                 columns: document.getElementById("columns").value,
@@ -36,9 +39,7 @@ window.addEventListener("load", function() {
             spritesheetConfig.style.display = "none";
 
             editor.style.display = "flex";
-            view.width = view.clientWidth;
-            view.height = view.clientHeight;
-            var ctx = view.getContext("2d");
+            startEditor(left, right, view);
 
         } else spritesheetConfig.classList.add("missing-field");
     });
