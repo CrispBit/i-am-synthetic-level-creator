@@ -3,24 +3,58 @@ URL = URL || webkitURL;
 window.addEventListener("load", function() {
 
     var createnewButton = document.getElementById("createnew"),
-        //importButton = document.getElementById("import"),
+        importButton = document.getElementById("import"),
         lvldimContinue = document.getElementById("lvldim-continue"),
         okButton = document.getElementById("ok");
         editor = document.getElementById("editor"),
         view = document.getElementById("view");
 
-    var level = new Level();
+    var level;
+
+    importButton.addEventListener("click", function() {
+
+        var begindiv = document.getElementById("begin"),
+            spritesheetInput = document.getElementById("spritesheet-input"),
+            levelfileInput = document.getElementById("levelfile-input");
+
+        if (spritesheetInput.files.length > 0 &&
+            levelfileInput.files.length > 0) {
+
+            var levelfile = levelfileInput.files[0];
+
+            function next(loadedLevel) {
+
+                var spritesheetConfig = document.getElementById("spritesheet-config");
+
+                if (!loadedLevel) {
+                    alert("There was an error loading the levelfile");
+                    return;
+                }
+
+                level = loadedLevel;
+
+                begindiv.style.display = "none";
+                spritesheetConfig.style.display = "inline-block";
+
+            }
+
+            if (levelfile.name.match(/\.csv$/)) Level.fromCSV(levelfile, next);
+            else Level.fromDAT(levelfile, next);
+        }
+    });
 
     createnewButton.addEventListener("click", function() {
 
-        var spritesheetInput = document.getElementById("spritesheet-input");
-        var lvldim = document.getElementById("lvldim");
-        var begindiv = document.getElementById("begin");
+        var spritesheetInput = document.getElementById("spritesheet-input"),
+            lvldim = document.getElementById("lvldim"),
+            begindiv = document.getElementById("begin");
 
         if (spritesheetInput.files.length > 0) {
 
             begindiv.style.display = "none";
             lvldim.style.display = "inline-block";
+
+            level = new Level();
 
         } else begindiv.classList.add("missing-field");
     });
