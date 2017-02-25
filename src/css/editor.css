@@ -20,7 +20,7 @@ body {
     border-color: black;
 
     text-align: center;
-    padding: 10px;
+    padding: 5px;
 }
 
 #view {
@@ -31,4 +31,9 @@ body {
     border-color: black;
     border-left: none;
     border-right: none;
+}
+
+.tile {
+    margin: 3px;
+    display: inline-block;
 }
