@@ -1,45 +1,78 @@
+URL = URL || webkitURL;
+
 window.addEventListener("load", function() {
 
-    var continueButton = document.getElementById("continue"),
-        importButton = document.getElementById("import"),
+    var createnewButton = document.getElementById("createnew"),
+        //importButton = document.getElementById("import"),
+        lvldimContinue = document.getElementById("lvldim-continue"),
         okButton = document.getElementById("ok");
         editor = document.getElementById("editor"),
         view = document.getElementById("view");
 
-    continueButton.addEventListener("click", function() {
+    var level = new Level();
+
+    createnewButton.addEventListener("click", function() {
 
         var spritesheetInput = document.getElementById("spritesheet-input");
-        var spritesheetConfig = document.getElementById("spritesheet-config");
+        var lvldim = document.getElementById("lvldim");
         var begindiv = document.getElementById("begin");
 
         if (spritesheetInput.files.length > 0) {
 
             begindiv.style.display = "none";
-            spritesheetConfig.style.display = "inline-block";
+            lvldim.style.display = "inline-block";
 
         } else begindiv.classList.add("missing-field");
+    });
+
+    lvldimContinue.addEventListener("click", function() {
+
+        var lvldim = document.getElementById("lvldim"),
+            spritesheetConfig = document.getElementById("spritesheet-config"),
+            lvlwidth = document.getElementById("lvlwidth").value,
+            lvlheight = document.getElementById("lvlheight").value;
+
+        if (lvlwidth && lvlheight) {
+
+            level.width = +lvlwidth;
+            level.height = +lvlheight;
+            level.data = new Uint8Array(lvlwidth * lvlheight);
+
+            lvldim.style.display = "none";
+            spritesheetConfig.style.display = "inline-block";
+
+        } else lvldim.classList.add("missing-field");
     });
 
     okButton.addEventListener("click", function() {
         
         var spritesheetConfig = document.getElementById("spritesheet-config"),
+            spritesheetInput = document.getElementById("spritesheet-input"),
             left = document.getElementById("left"),
             right = document.getElementById("right"),
             view = document.getElementById("view"),
-            spritesheet = {
-                rows: document.getElementById("rows").value,
-                columns: document.getElementById("columns").value,
-                spriteWidth: document.getElementById("width").value,
-                spriteHeight: document.getElementById("height").value
-            };
+            rows = document.getElementById("rows").value,
+            columns = document.getElementById("columns").value,
+            spriteWidth = document.getElementById("width").value,
+            spriteHeight = document.getElementById("height").value;
 
-        if (spritesheet.rows && spritesheet.columns &&
-            spritesheet.spriteWidth && spritesheet.spriteHeight) {
+        if (spriteWidth && spriteHeight && rows && columns) {
 
             spritesheetConfig.style.display = "none";
 
             editor.style.display = "flex";
-            startEditor(left, right, view);
+
+            var spritesheetURL = URL.createObjectURL(spritesheetInput.files[0]);
+            var spritesheetImage = new Image();
+            spritesheetImage.src = spritesheetURL;
+
+            spritesheetImage.onload = function() {
+                var spritesheet = new Spritesheet(spritesheetImage, rows,
+                                                  columns, spriteWidth,
+                                                  spriteHeight);
+                level.spritesheet = spritesheet;
+                startEditor(left, right, view, level);
+            }
 
         } else spritesheetConfig.classList.add("missing-field");
     });

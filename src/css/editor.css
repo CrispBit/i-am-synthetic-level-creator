@@ -8,8 +8,7 @@ body {
 }
 
 #editor {
-    /* display: flex; */
-    display: none;
+    display: flex;
     height: 100%;
 }
 

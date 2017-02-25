@@ -5,10 +5,13 @@
         <title>I Am Synthetic Level Creator</title>
         <link rel="stylesheet" href="css/editor.css">
         <link rel="stylesheet" href="css/begin.css">
+        <script src="js/Spritesheet.js"></script>
+        <script src="js/Level.js"></script>
         <script src="js/main.js"></script>
         <script src="js/editor.js"></script>
     </head>
     <body>
+
         <div class="prompt" id="begin">
             <label class="required" for="spritesheet-input">Spritesheet</label>
             <input type="file" id="spritesheet-input" accept="image/*" />
@@ -17,7 +20,7 @@
             <input type="file" id="bg-input" accept="image/*" />
             <br/>
             <br/>
-            <button id="continue">Continue</button>
+            <button id="createnew">Create New</button>
             <br/>
             <br/>
             Or Import Existing
@@ -29,6 +32,19 @@
             <br/>
             <button id="import">Import</button>
         </div>
+
+        <div class="prompt" id="lvldim" style="display: none">
+            Level Dimensions (in tiles)
+            <br/>
+            <label class="required" for="lvlwidth">Width:</label>
+            <input id="lvlwidth" type="number"/>
+            <br/>
+            <label class="required" for="lvlheight">Height</label>
+            <input id="lvlheight" type="number"/>
+            <br/>
+            <button id="lvldim-continue">Continue</button>
+        </div>
+
         <div class="prompt" id="spritesheet-config" style="display: none">
             Spritesheet config
             <br/>
@@ -46,10 +62,12 @@
             <br/>
             <button id="ok">Ok</button>
         </div>
-        <div id="editor">
+
+        <div id="editor" style="display: none">
             <div id="left">left</div>
             <canvas id="view">What is wrong with you?</canvas>
             <div id="right">right</div>
         </div>
+
     </body>
 </html>
