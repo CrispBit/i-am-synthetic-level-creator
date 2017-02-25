@@ -12,11 +12,6 @@ function startEditor(left, right, view, level) {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, view.width, view.height);
 
-        var r1 = level.width * level.spritesheet.spriteWidth / view.width;
-        var r2 = level.height * level.spritesheet.spriteHeight / view.height;
-        if (r1 > r2) viewScale = 1/r1;
-        else viewscale = 1/r2;
-
         for (var y = 0; y < level.height; y++) {
 
             for (var x = 0; x < level.width; x++) {
@@ -47,13 +42,49 @@ function startEditor(left, right, view, level) {
                 }
             }
         }
+
+        var requestAnimationFrame = (window.requestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    function(f){setTimeout(f,10);});
+
+        requestAnimationFrame(draw);
+
     };
 
     window.addEventListener("resize", function() {
         resizeView(view);
     });
 
+    view.addEventListener("wheel", function(e) {
+
+        var rect = view.getBoundingClientRect();
+        if (e.altKey) {
+
+            var scale = Math.pow(1.001, -e.deltaY);
+
+            var mousex = (e.clientX - rect.left - view.width/2 - viewOffset.x);
+            var mousey = (e.clientY - rect.top - view.height/2 - viewOffset.y);
+
+            viewOffset.x += -mousex * scale + mousex;
+            viewOffset.y += -mousey * scale + mousey;
+
+            viewScale *= scale;
+
+        }
+        else if (e.shiftKey) viewOffset.x += -e.deltaY / 7;
+        else viewOffset.y += -e.deltaY / 7;
+
+    });
+
     resizeView(view);
+
+    var r1 = level.width * level.spritesheet.spriteWidth / view.width;
+    var r2 = level.height * level.spritesheet.spriteHeight / view.height;
+    if (r1 > r2) viewScale = 1/r1;
+    else viewscale = 1/r2;
+
+    draw();
 
 }
 
@@ -84,6 +115,5 @@ function resizeView(view) {
 
     view.width = view.clientWidth;
     view.height = view.clientHeight;
-    draw();
 
 }
