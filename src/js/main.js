@@ -15,7 +15,7 @@ window.addEventListener("load", function() {
         if (spritesheetInput.files.length > 0) {
 
             begindiv.style.display = "none";
-            spritesheetConfig.style.display = "";
+            spritesheetConfig.style.display = "inline-block";
 
         } else begindiv.classList.add("missing-field");
     });
