@@ -12,6 +12,15 @@ function startEditor(left, right, view, level) {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, view.width, view.height);
 
+        ctx.strokeStyle = "#555";
+        ctx.setLineDash([10, 3]);
+        ctx.strokeRect(-(level.width * level.spritesheet.spriteWidth) / 2 *
+                       viewScale + viewOffset.x + view.width / 2,
+                       -(level.height * level.spritesheet.spriteHeight) / 2 *
+                       viewScale + viewOffset.y + view.height / 2,
+                       level.width * level.spritesheet.spriteWidth * viewScale,
+                       level.height * level.spritesheet.spriteHeight * viewScale);
+
         for (var y = 0; y < level.height; y++) {
 
             for (var x = 0; x < level.width; x++) {
