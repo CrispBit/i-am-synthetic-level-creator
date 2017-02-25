@@ -8,23 +8,42 @@
         <script src="js/main.js"></script>
     </head>
     <body>
-        <div id="begin">
-            <span id="add-spritesheet-text" hidden>Please supply a spritesheet<br/></span>
-            Spritesheet <input type="file" id="spritesheet-input" accept="image/*" />
+        <div class="prompt" id="begin">
+            <label class="required" for="spritesheet-input">Spritesheet</label>
+            <input type="file" id="spritesheet-input" accept="image/*" />
             <br/>
-            Background <input type="file" id="bg-input" accept="image/*" />
+            <label for="bg-input">Background</label>
+            <input type="file" id="bg-input" accept="image/*" />
             <br/>
             <br/>
-            <button id="createnew">Create New</button>
+            <button id="continue">Continue</button>
             <br/>
             <br/>
             Or Import Existing
             <br/>
-            Levelfile <input type="file" id="levelfile-input" />
+            <label class="required" for="levelfile-input">Levelfile/csv</label>
+            <input type="file" id="levelfile-input" />
             <br/>
-            Metadata <input type="file" id="metadata-input" accept=".json" />
+            Metadata <input type="file" id="metadata-input" accept=".json,.csv" />
             <br/>
             <button id="import">Import</button>
+        </div>
+        <div class="prompt" id="spritesheet-config" style="display: none">
+            Spritesheet config
+            <br/>
+            <label class="required" for="rows">Rows:</label>
+            <input id="rows" type="number"/>
+            <br/>
+            <label class="required" for="columns">Columns:</label>
+            <input id="columns" type="number"/>
+            <br/>
+            <label class="required" for="width">Sprite width:</label>
+            <input id="width" type="number"/>
+            <br/>
+            <label class="required" for="height">Sprite height:</label>
+            <input id="height" type="number"/>
+            <br/>
+            <button id="ok">Ok</button>
         </div>
         <div id="editor">
             <div id="left">left</div>
