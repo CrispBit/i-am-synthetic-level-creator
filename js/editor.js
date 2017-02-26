@@ -74,19 +74,22 @@ function startEditor(left, right, view, level) {
 
         e.preventDefault();
 
-        var scrollAmount;
+        var scrollAmountY, scrollAmountX;
         switch (e.deltaMode) {
 
             case 0: // pixels
-                scrollAmount = e.deltaY;
+                scrollAmountY = e.deltaY;
+                scrollAmountX = e.deltaX;
                 break;
 
             case 1: // lines
-                scrollAmount = e.deltaY * 18;
+                scrollAmountY = e.deltaY * 18;
+                scrollAmountX = e.deltaX * 18;
                 break;
 
             case 2: // pages (untested)
-                scrollAmount = e.deltaY * 40;
+                scrollAmountY = e.deltaY * 40;
+                scrollAmountX = e.deltaX * 18;
                 break;
         }
 
@@ -94,7 +97,7 @@ function startEditor(left, right, view, level) {
         if (e.altKey || e.ctrlKey) {
 
 
-            var scale = Math.pow(1.001, -scrollAmount);
+            var scale = Math.pow(1.001, -scrollAmountY);
 
             var mousex = (e.clientX - rect.left - view.width/2 - viewOffset.x);
             var mousey = (e.clientY - rect.top - view.height/2 - viewOffset.y);
@@ -104,9 +107,13 @@ function startEditor(left, right, view, level) {
 
             viewScale *= scale;
 
-        } else if (e.shiftKey) viewOffset.x += -scrollAmount / 7;
-        else viewOffset.y += -scrollAmount / 7;
+        } else if (e.shiftKey) viewOffset.x += -scrollAmountY / 7;
+        else {
 
+            viewOffset.y += -scrollAmountY / 7;
+            viewOffset.x += scrollAmountX / 7;
+
+        }
     });
 
     resizeView(view);
