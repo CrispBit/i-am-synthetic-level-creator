@@ -111,7 +111,7 @@ function startEditor(left, right, view, level) {
         else {
 
             viewOffset.y += -scrollAmountY / 7;
-            viewOffset.x += scrollAmountX / 7;
+            viewOffset.x += -scrollAmountX / 7;
 
         }
     });
