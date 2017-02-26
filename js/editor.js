@@ -72,10 +72,29 @@ function startEditor(left, right, view, level) {
 
     view.addEventListener("wheel", function(e) {
 
-        var rect = view.getBoundingClientRect();
-        if (e.altKey) {
+        e.preventDefault();
 
-            var scale = Math.pow(1.001, -e.deltaY);
+        var scrollAmount;
+        switch (e.deltaMode) {
+
+            case 0: // pixels
+                scrollAmount = e.deltaY;
+                break;
+
+            case 1: // lines
+                scrollAmount = e.deltaY * 18;
+                break;
+
+            case 2: // pages (untested)
+                scrollAmount = e.deltaY * 40;
+                break;
+        }
+
+        var rect = view.getBoundingClientRect();
+        if (e.altKey || e.ctrlKey) {
+
+
+            var scale = Math.pow(1.001, -scrollAmount);
 
             var mousex = (e.clientX - rect.left - view.width/2 - viewOffset.x);
             var mousey = (e.clientY - rect.top - view.height/2 - viewOffset.y);
@@ -85,9 +104,8 @@ function startEditor(left, right, view, level) {
 
             viewScale *= scale;
 
-        }
-        else if (e.shiftKey) viewOffset.x += -e.deltaY / 7;
-        else viewOffset.y += -e.deltaY / 7;
+        } else if (e.shiftKey) viewOffset.x += -scrollAmount / 7;
+        else viewOffset.y += -scrollAmount / 7;
 
     });
 
