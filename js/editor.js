@@ -42,6 +42,11 @@ function startEditor(left, right, view, level) {
                         viewScale + viewOffset.y + view.height / 2;
 
 
+                    ctx.mozImageSmoothingEnabled = false;
+                    ctx.webkitImageSmoothingEnabled = false;
+                    ctx.msImageSmoothingEnabled = false;
+                    ctx.imageSmoothingEnabled = false;
+
                     ctx.drawImage(level.spritesheet.image, sx, sy,
                         level.spritesheet.spriteWidth,
                         level.spritesheet.spriteHeight, dx, dy,
