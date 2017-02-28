@@ -100,8 +100,8 @@ function startEditor(left, right, view, level) {
 
             var scale = Math.pow(1.001, -scrollAmountY);
 
-            var mousex = (e.clientX - rect.left - view.width/2 - viewOffset.x);
-            var mousey = (e.clientY - rect.top - view.height/2 - viewOffset.y);
+            var mousex = e.clientX - rect.left - view.width/2 - viewOffset.x;
+            var mousey = e.clientY - rect.top - view.height/2 - viewOffset.y;
 
             viewOffset.x += -mousex * scale + mousex;
             viewOffset.y += -mousey * scale + mousey;
