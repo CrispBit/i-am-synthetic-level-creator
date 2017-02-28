@@ -1,8 +1,9 @@
 function startEditor(left, right, view, level) {
 
     var viewOffset = {x: 0, y: 0};
-    var viewScale = 1;
     var mousePos = {x: 0, y: 0};
+    var viewScale = 1;
+    var scaleLimit = 4;
 
     initLeft(left, level);
 
@@ -113,23 +114,27 @@ function startEditor(left, right, view, level) {
 
 
             var scale = Math.pow(1.001, -scrollAmountY);
+            var newViewScale = viewScale * scale;
 
-            viewScale *= scale;
+            if (newViewScale > scaleLimit) {
 
-            if (viewScale > 4) {
+                scale = scaleLimit / viewScale;
 
-                viewScale = 4;
+                viewScale = scaleLimit;
 
             } else {
 
-                var rect = view.getBoundingClientRect();
-                var mousex = e.clientX - rect.left - view.width/2 - viewOffset.x;
-                var mousey = e.clientY - rect.top - view.height/2 - viewOffset.y;
-
-                viewOffset.x += -mousex * scale + mousex;
-                viewOffset.y += -mousey * scale + mousey;
+                viewScale = newViewScale;
 
             }
+
+            var rect = view.getBoundingClientRect();
+            var mousex = e.clientX - rect.left - view.width/2 - viewOffset.x;
+            var mousey = e.clientY - rect.top - view.height/2 - viewOffset.y;
+
+            viewOffset.x += -mousex * scale + mousex;
+            viewOffset.y += -mousey * scale + mousey;
+
         } else if (e.shiftKey) {
 
             viewOffset.x += -scrollAmountY / 7;
