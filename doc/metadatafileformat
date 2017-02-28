@@ -1,4 +1,4 @@
-format is in JSON
+format is in YAML
 A question mark after a property means the property is optional
 
 root object:
