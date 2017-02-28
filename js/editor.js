@@ -167,7 +167,7 @@ function startEditor(left, right, view, level) {
     var r1 = level.width * level.spritesheet.spriteWidth / view.width;
     var r2 = level.height * level.spritesheet.spriteHeight / view.height;
     if (r1 > r2) viewScale = 1/r1;
-    else viewscale = 1/r2;
+    else viewScale = 1/r2;
 
     draw();
 
