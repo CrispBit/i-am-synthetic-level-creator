@@ -146,13 +146,20 @@ function startEditor(left, right, view, level) {
 
         var rect = view.getBoundingClientRect();
 
-        mousePos.x = Math.floor((e.clientX - rect.left - view.width/2 - viewOffset.x)
+        var mousex = Math.floor((e.clientX - rect.left - view.width/2 - viewOffset.x)
                      / viewScale / level.spritesheet.spriteWidth
                      + level.width / 2);
-        mousePos.y = Math.floor((e.clientY - rect.top - view.height/2 - viewOffset.y)
+        var mousey = Math.floor((e.clientY - rect.top - view.height/2 - viewOffset.y)
                      / viewScale / level.spritesheet.spriteHeight
                      + level.height / 2);
 
+        if (mousex >= 0 && mousey >= 0 &&
+            mousex < level.width && mousey < level.height) {
+
+            mousePos.x = mousex;
+            mousePos.y = mousey;
+
+        }
     });
 
     resizeView(view);
