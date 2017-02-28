@@ -14,12 +14,13 @@ function startEditor(left, right, view, level) {
 
         ctx.strokeStyle = "#555";
         ctx.setLineDash([10, 3]);
+        ctx.lineWidth = 2;
         ctx.strokeRect(-(level.width * level.spritesheet.spriteWidth) / 2 *
-                       viewScale + viewOffset.x + view.width / 2,
+                       viewScale + viewOffset.x + view.width / 2 - 1,
                        -(level.height * level.spritesheet.spriteHeight) / 2 *
-                       viewScale + viewOffset.y + view.height / 2,
-                       level.width * level.spritesheet.spriteWidth * viewScale,
-                       level.height * level.spritesheet.spriteHeight * viewScale);
+                       viewScale + viewOffset.y + view.height / 2 - 1,
+                       level.width * level.spritesheet.spriteWidth * viewScale + 2,
+                       level.height * level.spritesheet.spriteHeight * viewScale + 2);
 
         for (var y = 0; y < level.height; y++) {
 
