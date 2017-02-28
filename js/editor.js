@@ -94,22 +94,32 @@ function startEditor(left, right, view, level) {
                 break;
         }
 
-        var rect = view.getBoundingClientRect();
         if (e.altKey || e.ctrlKey) {
 
 
             var scale = Math.pow(1.001, -scrollAmountY);
 
-            var mousex = e.clientX - rect.left - view.width/2 - viewOffset.x;
-            var mousey = e.clientY - rect.top - view.height/2 - viewOffset.y;
-
-            viewOffset.x += -mousex * scale + mousex;
-            viewOffset.y += -mousey * scale + mousey;
-
             viewScale *= scale;
 
-        } else if (e.shiftKey) viewOffset.x += -scrollAmountY / 7;
-        else {
+            if (viewScale > 4) {
+
+                viewScale = 4;
+
+            } else {
+
+                var rect = view.getBoundingClientRect();
+                var mousex = e.clientX - rect.left - view.width/2 - viewOffset.x;
+                var mousey = e.clientY - rect.top - view.height/2 - viewOffset.y;
+
+                viewOffset.x += -mousex * scale + mousex;
+                viewOffset.y += -mousey * scale + mousey;
+
+            }
+        } else if (e.shiftKey) {
+
+            viewOffset.x += -scrollAmountY / 7;
+
+        } else {
 
             viewOffset.y += -scrollAmountY / 7;
             viewOffset.x += -scrollAmountX / 7;
