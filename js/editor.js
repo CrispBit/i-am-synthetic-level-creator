@@ -2,6 +2,7 @@ function startEditor(left, right, view, level) {
 
     var viewOffset = {x: 0, y: 0};
     var viewScale = 1;
+    var mousePos = {x: 0, y: 0};
 
     initLeft(left, level);
 
@@ -57,6 +58,20 @@ function startEditor(left, right, view, level) {
                 }
             }
         }
+
+        ctx.strokeStyle = "red";
+        ctx.setLineDash([0, 0]);
+        ctx.lineWidth = 3;
+        ctx.strokeRect((mousePos.x - level.width / 2) *
+                        level.spritesheet.spriteWidth *
+                        viewScale + viewOffset.x + view.width / 2,
+                        (mousePos.y - level.height / 2) *
+                        level.spritesheet.spriteHeight *
+                        viewScale + viewOffset.y + view.height / 2,
+                        level.spritesheet.spriteWidth * viewScale,
+                        level.spritesheet.spriteHeight * viewScale);
+
+
 
         var requestAnimationFrame = (window.requestAnimationFrame ||
                     window.webkitRequestAnimationFrame ||
@@ -125,6 +140,19 @@ function startEditor(left, right, view, level) {
             viewOffset.x += -scrollAmountX / 7;
 
         }
+    });
+
+    view.addEventListener("mousemove", function(e) {
+
+        var rect = view.getBoundingClientRect();
+
+        mousePos.x = Math.floor((e.clientX - rect.left - view.width/2 - viewOffset.x)
+                     / viewScale / level.spritesheet.spriteWidth
+                     + level.width / 2);
+        mousePos.y = Math.floor((e.clientY - rect.top - view.height/2 - viewOffset.y)
+                     / viewScale / level.spritesheet.spriteHeight
+                     + level.height / 2);
+
     });
 
     resizeView(view);
