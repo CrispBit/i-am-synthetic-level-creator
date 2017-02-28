@@ -1,0 +1,39 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: calc(100% - 16px);
+    margin: 8px;
+}
+
+#editor {
+    display: flex;
+    height: 100%;
+}
+
+#left, #right {
+    width: 20%;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: #777;
+
+    text-align: center;
+    padding: 5px;
+}
+
+#view {
+    width: 60%;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    border-left: none;
+    border-right: none;
+}
+
+.tile {
+    margin: 3px;
+    display: inline-block;
+}

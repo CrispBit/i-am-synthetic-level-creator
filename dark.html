@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>I Am Synthetic Level Creator</title>
+        <link rel="stylesheet" href="css/dark.css">
+        <link rel="stylesheet" href="css/editor-dark.css">
+        <link rel="stylesheet" href="css/begin-dark.css">
+        <script src="js/Spritesheet.js"></script>
+        <script src="js/Level.js"></script>
+        <script src="js/editor.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+
+        <div class="prompt" id="begin">
+            <label class="required" for="spritesheet-input">Spritesheet</label>
+            <input type="file" id="spritesheet-input" accept="image/*" />
+            <br/>
+            <label for="bg-input">Background</label>
+            <input type="file" id="bg-input" accept="image/*" />
+            <br/>
+            <br/>
+            <button id="createnew">Create New</button>
+            <br/>
+            <br/>
+            Or Import Existing
+            <br/>
+            <label class="required" for="levelfile-input">Levelfile/CSV</label>
+            <input type="file" id="levelfile-input" />
+            <br/>
+            Metadata <input type="file" id="metadata-input" accept=".yaml" />
+            <br/>
+            <button id="import">Import</button>
+        </div>
+
+        <div class="prompt" id="lvldim" style="display: none">
+            Level Dimensions (in tiles)
+            <br/>
+            <label class="required" for="lvlwidth">Width:</label>
+            <input id="lvlwidth" type="number"/>
+            <br/>
+            <label class="required" for="lvlheight">Height</label>
+            <input id="lvlheight" type="number"/>
+            <br/>
+            <button id="lvldim-continue">Continue</button>
+        </div>
+
+        <div class="prompt" id="spritesheet-config" style="display: none">
+            Spritesheet config
+            <br/>
+            <label class="required" for="rows">Rows:</label>
+            <input id="rows" type="number"/>
+            <br/>
+            <label class="required" for="columns">Columns:</label>
+            <input id="columns" type="number"/>
+            <br/>
+            <label class="required" for="width">Sprite width:</label>
+            <input id="width" type="number"/>
+            <br/>
+            <label class="required" for="height">Sprite height:</label>
+            <input id="height" type="number"/>
+            <br/>
+            <button id="ok">Ok</button>
+        </div>
+
+        <div id="editor" style="display: none">
+            <div id="left"></div>
+            <canvas id="view">What is wrong with you?</canvas>
+            <div id="right">right</div>
+        </div>
+    </body>
+</html>
