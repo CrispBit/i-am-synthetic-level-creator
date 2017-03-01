@@ -1,9 +1,12 @@
-function startEditor(left, right, view, level) {
+(function() {
 
-    var viewOffset = {x: 0, y: 0};
-    var mousePos = {x: 0, y: 0};
-    var viewScale = 1;
-    var scaleLimit = 4;
+var viewOffset = {x: 0, y: 0};
+var mousePos = {x: 0, y: 0};
+var viewScale = 1;
+var scaleLimit = 4;
+var heldTile = 0;
+
+function startEditor(left, right, view, level) {
 
     initLeft(left, level);
 
@@ -14,15 +17,7 @@ function startEditor(left, right, view, level) {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, view.width, view.height);
 
-        ctx.strokeStyle = "#555";
-        ctx.setLineDash([10, 3]);
-        ctx.lineWidth = 2;
-        ctx.strokeRect(-(level.width * level.spritesheet.spriteWidth) / 2 *
-                       viewScale + viewOffset.x + view.width / 2 - 1,
-                       -(level.height * level.spritesheet.spriteHeight) / 2 *
-                       viewScale + viewOffset.y + view.height / 2 - 1,
-                       level.width * level.spritesheet.spriteWidth * viewScale + 2,
-                       level.height * level.spritesheet.spriteHeight * viewScale + 2);
+        drawLevelOutline(view, ctx, level);
 
         for (var y = 0; y < level.height; y++) {
 
@@ -31,48 +26,13 @@ function startEditor(left, right, view, level) {
                 var i;
                 if ((i = level.data[x + level.width * y]) > 0) {
 
-                    i--;
-
-                    var sx = i % level.spritesheet.columns *
-                            level.spritesheet.spriteWidth;
-                    var sy = Math.floor(i / level.spritesheet.columns) *
-                            level.spritesheet.spriteHeight;
-                    var dx = (x - level.width / 2) *
-                        level.spritesheet.spriteWidth *
-                        viewScale + viewOffset.x + view.width / 2;
-                    var dy = (y - level.height / 2) *
-                        level.spritesheet.spriteHeight *
-                        viewScale + viewOffset.y + view.height / 2;
-
-
-                    ctx.mozImageSmoothingEnabled = false;
-                    ctx.webkitImageSmoothingEnabled = false;
-                    ctx.msImageSmoothingEnabled = false;
-                    ctx.imageSmoothingEnabled = false;
-
-                    ctx.drawImage(level.spritesheet.image, sx, sy,
-                        level.spritesheet.spriteWidth,
-                        level.spritesheet.spriteHeight, dx, dy,
-                        level.spritesheet.spriteWidth * viewScale,
-                        level.spritesheet.spriteHeight * viewScale);
+                    drawTile(view, ctx, level, --i, x, y);
 
                 }
             }
         }
 
-        ctx.strokeStyle = "red";
-        ctx.setLineDash([0, 0]);
-        ctx.lineWidth = 3;
-        ctx.strokeRect((mousePos.x - level.width / 2) *
-                        level.spritesheet.spriteWidth *
-                        viewScale + viewOffset.x + view.width / 2,
-                        (mousePos.y - level.height / 2) *
-                        level.spritesheet.spriteHeight *
-                        viewScale + viewOffset.y + view.height / 2,
-                        level.spritesheet.spriteWidth * viewScale,
-                        level.spritesheet.spriteHeight * viewScale);
-
-
+        drawMouseTileOutline(view, ctx, level);
 
         var requestAnimationFrame = (window.requestAnimationFrame ||
                     window.webkitRequestAnimationFrame ||
@@ -195,10 +155,69 @@ function initLeft(left, level) {
                 -level.spritesheet.spriteWidth * x + "px " +
                 -level.spritesheet.spriteHeight * y + "px";
 
+            tileDiv.addEventListener("mousedown", function() {
+                heldTile = x + y * level.spritesheet.columns;
+            });
+
             left.appendChild(tileDiv);
 
         }
     }
+}
+
+function drawTile(view, ctx, level, tile, x, y) {
+
+    var sx = tile % level.spritesheet.columns *
+        level.spritesheet.spriteWidth;
+    var sy = Math.floor(tile / level.spritesheet.columns) *
+        level.spritesheet.spriteHeight;
+    var dx = (x - level.width / 2) *
+        level.spritesheet.spriteWidth *
+        viewScale + viewOffset.x + view.width / 2;
+    var dy = (y - level.height / 2) *
+        level.spritesheet.spriteHeight *
+        viewScale + viewOffset.y + view.height / 2;
+
+
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.drawImage(level.spritesheet.image, sx, sy,
+        level.spritesheet.spriteWidth,
+        level.spritesheet.spriteHeight, dx, dy,
+        level.spritesheet.spriteWidth * viewScale,
+        level.spritesheet.spriteHeight * viewScale);
+
+}
+
+function drawLevelOutline(view, ctx, level) {
+
+    ctx.strokeStyle = "#555";
+    ctx.setLineDash([10, 3]);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(-(level.width * level.spritesheet.spriteWidth) / 2 *
+                   viewScale + viewOffset.x + view.width / 2 - 1,
+                   -(level.height * level.spritesheet.spriteHeight) / 2 *
+                   viewScale + viewOffset.y + view.height / 2 - 1,
+                   level.width * level.spritesheet.spriteWidth * viewScale + 2,
+                   level.height * level.spritesheet.spriteHeight * viewScale + 2);
+}
+
+function drawMouseTileOutline(view, ctx, level) {
+
+        ctx.strokeStyle = "red";
+        ctx.setLineDash([0, 0]);
+        ctx.lineWidth = 3;
+        ctx.strokeRect((mousePos.x - level.width / 2) *
+                        level.spritesheet.spriteWidth *
+                        viewScale + viewOffset.x + view.width / 2,
+                        (mousePos.y - level.height / 2) *
+                        level.spritesheet.spriteHeight *
+                        viewScale + viewOffset.y + view.height / 2,
+                        level.spritesheet.spriteWidth * viewScale,
+                        level.spritesheet.spriteHeight * viewScale);
 }
 
 function resizeView(view) {
@@ -207,3 +226,8 @@ function resizeView(view) {
     view.height = view.clientHeight;
 
 }
+
+
+window.startEditor = startEditor;
+
+})();
