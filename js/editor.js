@@ -23,10 +23,15 @@ function startEditor(left, right, view, level) {
 
             for (var x = 0; x < level.width; x++) {
 
-                var i;
-                if ((i = level.data[x + level.width * y]) > 0) {
+                var tile = level.data[x + level.width * y]
 
-                    drawTile(view, ctx, level, --i, x, y);
+                if (heldTile && mousePos.x == x && mousePos.y == y) {
+
+                    drawTile(view, ctx, level, heldTile, x, y);
+
+                } else if (tile > 0) {
+
+                    drawTile(view, ctx, level, --tile, x, y);
 
                 }
             }
@@ -127,6 +132,24 @@ function startEditor(left, right, view, level) {
         }
     });
 
+    view.addEventListener("mouseup", function() {
+
+        if (heldTile) {
+
+            level.data[mousePos.x + mousePos.y * level.width] = heldTile + 1;
+            heldTile = 0;
+
+        }
+    });
+
+    window.addEventListener("mouseup", function() {
+
+        heldTile = 0;
+
+    });
+
+    window.addEventListener("mousedown", function(e){e.preventDefault();});
+
     resizeView(view);
 
     var r1 = level.width * level.spritesheet.spriteWidth / view.width;
@@ -155,8 +178,9 @@ function initLeft(left, level) {
                 -level.spritesheet.spriteWidth * x + "px " +
                 -level.spritesheet.spriteHeight * y + "px";
 
-            tileDiv.addEventListener("mousedown", function() {
-                heldTile = x + y * level.spritesheet.columns;
+            tileDiv.setAttribute("number", x + y * level.spritesheet.columns);
+            tileDiv.addEventListener("mousedown", function(e) {
+                heldTile = +this.getAttribute("number");
             });
 
             left.appendChild(tileDiv);
