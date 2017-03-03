@@ -209,7 +209,7 @@ function drawMouseTileOutline(view, ctx, level) {
 
         ctx.strokeStyle = "red";
         ctx.setLineDash([0, 0]);
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 1;
         ctx.strokeRect((mousePos.x - level.width / 2) *
                         level.spritesheet.spriteWidth *
                         viewScale + viewOffset.x + view.width / 2,
