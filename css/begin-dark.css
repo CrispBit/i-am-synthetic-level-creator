@@ -1,22 +1,3 @@
 .prompt {
-    display: inline-block;
-
-    padding: 1em;
-
-    line-height: 1.5;
-
-    border-style: solid;
-    border-width: 1px;
     border-color: #777;
-}
-
-.required::before {
-    color: red;
-    content: "*";
-}
-
-.missing-field::before {
-    color: red;
-    content: "One or more of the required fields are missing\A";
-    display: block;
 }
