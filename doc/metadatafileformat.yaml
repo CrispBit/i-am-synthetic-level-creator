@@ -3,7 +3,7 @@
 
 %TAG ! tag:crispbit.com,2017:iamsynth/
 
---- !config
+--- !levelmeta
 
 name: "Name of Level"
 levelfile: "name_of_levelfile.dat"
