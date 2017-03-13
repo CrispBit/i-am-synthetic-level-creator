@@ -16,19 +16,19 @@ function Level(spritesheet, width, height, data, bg) {
 
 }
 
-Level.fromDAT = function(levelfile, callback) {
+Level.prototype.loadDataFromDAT = function(levelfile, finishCallback) {
+
+    var level = this;
     var fr = new FileReader();
 
     fr.onerror = function() {
 
         console.log(fr.error);
-        callback(null);
+        finishCallback(false);
 
     };
 
     fr.onload = function() {
-
-        var level = new Level();
 
         var size = new Uint16Array(fr.result, 0, 2);
 
@@ -37,9 +37,36 @@ Level.fromDAT = function(levelfile, callback) {
 
         level.data = new Uint8Array(fr.result, 4);
 
-        callback(level);
+        finishCallback(true);
 
     };
 
     fr.readAsArrayBuffer(levelfile);
+}
+
+Level.prototype.loadDataFromCSV = function(levelfile, finishCallback) {
+
+    var level = this;
+    var fr = new FileReader();
+
+    fr.onerror = function() {
+        console.log(fr.error);
+        finishCallback(false);
+    };
+
+    fr.onload = function() {
+
+        var a = fr.result.split("\n").filter(v => v);
+        level.height = a.length;
+
+        a = a.join(",").split(",").map(v => +v + 1);
+        level.width = a.length / level.height;
+
+        level.data = new Uint8Array(a);
+
+        finishCallback(true);
+
+    };
+
+    fr.readAsText(levelfile);
 }

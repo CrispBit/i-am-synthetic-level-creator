@@ -9,37 +9,37 @@ window.addEventListener("load", function() {
         editor = document.getElementById("editor"),
         view = document.getElementById("view");
 
-    var level;
+    var level = new Level();
 
     importButton.addEventListener("click", function() {
 
         var begindiv = document.getElementById("begin"),
             spritesheetInput = document.getElementById("spritesheet-input"),
-            levelfileInput = document.getElementById("levelfile-input");
+            levelfileInput = document.getElementById("levelfile-input"),
+            metadataInput = document.getElementById("metadata-input");
 
         if (spritesheetInput.files.length > 0 &&
             levelfileInput.files.length > 0) {
 
             var levelfile = levelfileInput.files[0];
 
-            function next(loadedLevel) {
+            function next(success) {
 
+                console.log(level, success);
                 var spritesheetConfig = document.getElementById("spritesheet-config");
 
-                if (!loadedLevel) {
+                if (!success) {
                     alert("There was an error loading the levelfile");
                     return;
                 }
-
-                level = loadedLevel;
 
                 begindiv.style.display = "none";
                 spritesheetConfig.style.display = "inline-block";
 
             }
 
-            if (levelfile.name.match(/\.csv$/)) Level.fromCSV(levelfile, next);
-            else Level.fromDAT(levelfile, next);
+            if (levelfile.name.match(/\.csv$/)) level.loadDataFromCSV(levelfile, next);
+            else level.loadDataFromDAT(levelfile, next);
         }
     });
 
