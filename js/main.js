@@ -40,7 +40,7 @@ window.addEventListener("load", function() {
 
             if (levelfile.name.match(/\.csv$/)) level.loadDataFromCSV(levelfile, next);
             else level.loadDataFromDAT(levelfile, next);
-        }
+        } else begindiv.classList.add("missing-field");
     });
 
     createnewButton.addEventListener("click", function() {
