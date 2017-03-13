@@ -79,7 +79,7 @@ window.addEventListener("load", function() {
     });
 
     okButton.addEventListener("click", function() {
-        
+
         var spritesheetConfig = document.getElementById("spritesheet-config"),
             spritesheetInput = document.getElementById("spritesheet-input"),
             left = document.getElementById("left"),
