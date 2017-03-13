@@ -1,0 +1,46 @@
+# format is in YAML
+# A question mark after a property means the property is optional
+
+%TAG ! tag:crispbit.com,2017:iamsynth/
+
+--- !config
+
+name: "Name of Level"
+levelfile: "name_of_levelfile.dat"
+
+spritesheet: !spritesheet
+
+    image: "name_of_spritesheet_image.png"
+
+    # size of individual each sprite
+    spriteWidth: 1337
+    spriteHeight: 42
+
+    # rows and columns of sprites in sheet
+    rows: 40
+    columns: 60
+
+background: "name_of_background_image.png"
+
+events: # list of events
+    - !event
+
+        # Event types
+        # 1 = Chat Bubble
+        type: 1
+
+        # coordinates of event (exact behavior yet to be determined)
+        atX: 13
+        atY: 5
+
+        text: # list of texts
+            - !text
+                str: "stringytexts"
+                skippable: false # optional
+
+                # Text effects
+                # 1 = Shake
+                # 2 = Spin
+                effect: 1 # optional
+
+                speed: 1.0 # optional
