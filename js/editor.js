@@ -1,10 +1,11 @@
 (function() {
 
 var viewOffset = {x: 0, y: 0};
-var mousePos = {x: 0, y: 0};
+var mouseTilePos = {x: 0, y: 0};
 var viewScale = 1;
 var scaleLimit = 4;
-var heldTile = 0;
+var selectedTiles = [];
+var mouseDownStart = {x: 0, y: 0};
 
 function startEditor(left, right, view, level) {
 
@@ -24,20 +25,13 @@ function startEditor(left, right, view, level) {
             for (var x = 0; x < level.width; x++) {
 
                 var tile = level.data[x + level.width * y]
-
-                if (heldTile && mousePos.x == x && mousePos.y == y) {
-
-                    drawTile(view, ctx, level, heldTile, x, y);
-
-                } else if (tile > 0) {
-
-                    drawTile(view, ctx, level, --tile, x, y);
-
-                }
+                if (tile > 0) drawTile(view, ctx, level, --tile, x, y);
             }
         }
 
         drawMouseTileOutline(view, ctx, level);
+
+        drawSelectedTilesOutline(view, ctx, level);
 
         var requestAnimationFrame = (window.requestAnimationFrame ||
                     window.webkitRequestAnimationFrame ||
@@ -112,6 +106,36 @@ function startEditor(left, right, view, level) {
         }
     });
 
+    view.addEventListener("mousedown", function(e) {
+
+        e.preventDefault();
+
+        var rect = view.getBoundingClientRect();
+
+        if (e.button == 0) { // left click
+
+            mouseDownStart.x = Math.floor((e.clientX - rect.left - view.width/2 - viewOffset.x)
+                         / viewScale / level.spritesheet.spriteWidth
+                         + level.width / 2);
+            mouseDownStart.y = Math.floor((e.clientY - rect.top - view.height/2 - viewOffset.y)
+                         / viewScale / level.spritesheet.spriteHeight
+                         + level.height / 2);
+
+            var tile = mouseDownStart.y * level.width + mouseDownStart.x;
+            if (e.ctrlKey) selectedTiles.push(tile);
+            else {
+
+                selectedTiles.length = 1;
+                selectedTiles[0] = tile;
+
+            }
+        } else if (e.button == 2) { // right click
+
+            selectedTiles.length = 0;
+
+        }
+    });
+
     view.addEventListener("mousemove", function(e) {
 
         var rect = view.getBoundingClientRect();
@@ -126,29 +150,25 @@ function startEditor(left, right, view, level) {
         if (mousex >= 0 && mousey >= 0 &&
             mousex < level.width && mousey < level.height) {
 
-            mousePos.x = mousex;
-            mousePos.y = mousey;
+            mouseTilePos.x = mousex;
+            mouseTilePos.y = mousey;
 
         }
     });
 
     view.addEventListener("mouseup", function() {
 
-        if (heldTile) {
+        // TODO stuff
 
-            level.data[mousePos.x + mousePos.y * level.width] = heldTile + 1;
-            heldTile = 0;
-
-        }
     });
 
     window.addEventListener("mouseup", function() {
 
-        heldTile = 0;
+        // TODO stuff
 
     });
 
-    window.addEventListener("mousedown", function(e){e.preventDefault();});
+    view.addEventListener("contextmenu", function(e){e.preventDefault();});
 
     resizeView(view);
 
@@ -178,13 +198,13 @@ function initLeft(left, level) {
                 -level.spritesheet.spriteWidth * x + "px " +
                 -level.spritesheet.spriteHeight * y + "px";
 
-            tileDiv.setAttribute("number", x + y * level.spritesheet.columns);
-            tileDiv.addEventListener("mousedown", function(e) {
-                heldTile = +this.getAttribute("number");
+            tileDiv.setAttribute("number", x + y * level.spritesheet.columns + 1);
+            tileDiv.addEventListener("click", function() {
+                for (var i = 0; i < selectedTiles.length; i++) {
+                    level.data[selectedTiles[i]] = this.getAttribute("number");
+                }
             });
-
             left.appendChild(tileDiv);
-
         }
     }
 }
@@ -231,17 +251,39 @@ function drawLevelOutline(view, ctx, level) {
 
 function drawMouseTileOutline(view, ctx, level) {
 
+    ctx.strokeStyle = "red";
+    ctx.setLineDash([]);
+    ctx.lineWidth = 1;
+    ctx.strokeRect((mouseTilePos.x - level.width / 2) *
+                    level.spritesheet.spriteWidth *
+                    viewScale + viewOffset.x + view.width / 2,
+                    (mouseTilePos.y - level.height / 2) *
+                    level.spritesheet.spriteHeight *
+                    viewScale + viewOffset.y + view.height / 2,
+                    level.spritesheet.spriteWidth * viewScale,
+                    level.spritesheet.spriteHeight * viewScale);
+}
+
+function drawSelectedTilesOutline(view, ctx, level) {
+
+    for (var i = 0; i < selectedTiles.length; i++) {
+
+        var tile = selectedTiles[i];
+        var tilex = tile % level.width;
+        var tiley = Math.floor(tile / level.width);
+
         ctx.strokeStyle = "red";
-        ctx.setLineDash([0, 0]);
+        ctx.setLineDash([]);
         ctx.lineWidth = 1;
-        ctx.strokeRect((mousePos.x - level.width / 2) *
+        ctx.strokeRect((tilex - level.width / 2) *
                         level.spritesheet.spriteWidth *
                         viewScale + viewOffset.x + view.width / 2,
-                        (mousePos.y - level.height / 2) *
+                        (tiley - level.height / 2) *
                         level.spritesheet.spriteHeight *
                         viewScale + viewOffset.y + view.height / 2,
                         level.spritesheet.spriteWidth * viewScale,
                         level.spritesheet.spriteHeight * viewScale);
+    }
 }
 
 function resizeView(view) {
