@@ -1,18 +1,27 @@
 /*
+ * name: String
  * spritesheet: Spritesheet
  * width: Integer
  * height: Integer
  * data: Uint8Array
  * bg: Image
+ * levelfile: String (filename)
  */
 
-function Level(spritesheet, width, height, data, bg) {
+function Level(name, spritesheet, width, height, data, bg, levelfile) {
 
+    //TODO events
+
+    name = typeof name !== "undefined" ? name : "Unnamed";
+    spritesheet = typeof spritesheet !== "undefined" ? spritesheet : new Spritesheet();
+
+    this.name = name || "Unnamed";
     this.spritesheet = spritesheet;
     this.width = width;
     this.height = height;
     this.data = data;
     this.bg = bg;
+    this.levelfile = levelfile;
 
 }
 
@@ -42,7 +51,7 @@ Level.prototype.loadDataFromDAT = function(levelfile, finishCallback) {
     };
 
     fr.readAsArrayBuffer(levelfile);
-}
+};
 
 Level.prototype.loadDataFromCSV = function(levelfile, finishCallback) {
 
@@ -69,4 +78,20 @@ Level.prototype.loadDataFromCSV = function(levelfile, finishCallback) {
     };
 
     fr.readAsText(levelfile);
-}
+};
+
+Level.fromYamlMetadata = function(metadatafile, finishCallback) {
+
+    var fr = new FileReader();
+
+    fr.onerror = function() {
+        console.log(fr.error);
+        finishCallback(null);
+    };
+
+    fr.onload = function() {
+        finishCallback(parseMetadata(fr.result));
+    };
+
+    fr.readAsText(metadatafile);
+};

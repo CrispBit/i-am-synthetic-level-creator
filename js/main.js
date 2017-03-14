@@ -6,10 +6,9 @@ window.addEventListener("load", function() {
         importButton = document.getElementById("import"),
         lvldimContinue = document.getElementById("lvldim-continue"),
         okButton = document.getElementById("ok");
-        editor = document.getElementById("editor"),
         view = document.getElementById("view");
 
-    var level = new Level();
+    var level;
 
     importButton.addEventListener("click", function() {
 
@@ -21,25 +20,77 @@ window.addEventListener("load", function() {
         if (spritesheetInput.files.length > 0 &&
             levelfileInput.files.length > 0) {
 
-            var levelfile = levelfileInput.files[0];
+            if (metadataInput.files.length > 0) {
+                Level.fromYamlMetadata(metadataInput.files[0], function(lvl){
+                    if (!lvl) {
+                        
+                        alert("There was an error loading the metadata");
 
-            function next(success) {
+                        level = new Level();
+                        loadfilestuff(false);
 
-                console.log(level, success);
-                var spritesheetConfig = document.getElementById("spritesheet-config");
-
-                if (!success) {
-                    alert("There was an error loading the levelfile");
-                    return;
-                }
-
-                begindiv.style.display = "none";
-                spritesheetConfig.style.display = "inline-block";
-
+                    } else {
+                        level = lvl;
+                        loadfilestuff(true);
+                    }
+                });
+            } else {
+                level = new Level();
+                loadfilestuff(false);
             }
 
-            if (levelfile.name.match(/\.csv$/)) level.loadDataFromCSV(levelfile, next);
-            else level.loadDataFromDAT(levelfile, next);
+            function loadfilestuff(metadataExists) {
+
+                var levelfile = levelfileInput.files[0];
+
+                var ready = 0; // will continue when this is 1, when both files have loaded
+                function next(thing, success) {
+
+                    if (!success) {
+                        alert("There was an error loading the " + thing);
+                        return;
+                    } else if (!(ready >= 1)) {
+                        ready++;
+                        return;
+                    }
+
+                    if (metadataExists) {
+
+                        var left = document.getElementById("left"),
+                            right = document.getElementById("right"),
+                            editor = document.getElementById("editor"),
+                            view = document.getElementById("view");
+
+                        begindiv.style.display = "none";
+                        editor.style.display = "flex";
+
+                        startEditor(left, right, view, level);
+
+                    } else {
+
+                        var spritesheetConfig = document.getElementById("spritesheet-config");
+
+                        begindiv.style.display = "none";
+                        spritesheetConfig.style.display = "inline-block";
+
+                    }
+                }
+
+                // load level file
+                if (levelfile.name.match(/\.csv$/))
+                    level.loadDataFromCSV(levelfile, next.bind(null, "levelfile"));
+                else
+                    level.loadDataFromDAT(levelfile, next.bind(null, "levelfile"));
+
+                // load spritesheet
+                var spritesheetURL = URL.createObjectURL(spritesheetInput.files[0]);
+                var spritesheetImage = new Image();
+                spritesheetImage.src = spritesheetURL;
+                level.spritesheet.image = spritesheetImage;
+                spritesheetImage.onload = next.bind(null, "spritesheet", true);
+                spritesheetImage.onerror = next.bind(null, "spritesheet", false);
+
+            }
         } else begindiv.classList.add("missing-field");
     });
 
@@ -88,25 +139,20 @@ window.addEventListener("load", function() {
             rows = document.getElementById("rows").value,
             columns = document.getElementById("columns").value,
             spriteWidth = document.getElementById("width").value,
-            spriteHeight = document.getElementById("height").value;
+            spriteHeight = document.getElementById("height").value,
+            editor = document.getElementById("editor");
 
         if (spriteWidth && spriteHeight && rows && columns) {
 
             spritesheetConfig.style.display = "none";
-
             editor.style.display = "flex";
 
-            var spritesheetURL = URL.createObjectURL(spritesheetInput.files[0]);
-            var spritesheetImage = new Image();
-            spritesheetImage.src = spritesheetURL;
+            level.spritesheet.spriteWidth = spriteWidth;
+            level.spritesheet.spriteHeight = spriteHeight;
+            level.spritesheet.rows = rows;
+            level.spritesheet.columns = columns;
 
-            spritesheetImage.onload = function() {
-                var spritesheet = new Spritesheet(spritesheetImage, rows,
-                                                  columns, spriteWidth,
-                                                  spriteHeight);
-                level.spritesheet = spritesheet;
-                startEditor(left, right, view, level);
-            }
+            startEditor(left, right, view, level);
 
         } else spritesheetConfig.classList.add("missing-field");
     });
