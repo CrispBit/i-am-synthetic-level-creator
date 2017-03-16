@@ -23,7 +23,7 @@ window.addEventListener("load", function() {
             if (metadataInput.files.length > 0) {
                 Level.fromYamlMetadata(metadataInput.files[0], function(lvl){
                     if (!lvl) {
-                        
+
                         alert("There was an error loading the metadata");
 
                         level = new Level();
