@@ -122,8 +122,11 @@ function startEditor(left, right, view, level) {
                          + level.height / 2);
 
             var tile = mouseDownStart.y * level.width + mouseDownStart.x;
-            if (e.ctrlKey) selectedTiles.push(tile);
-            else {
+            if (e.ctrlKey) {
+                var i = selectedTiles.findIndex(v => v == tile)
+                if (i == -1) selectedTiles.push(tile);
+                else selectedTiles.splice(i, 1);
+            } else {
 
                 selectedTiles.length = 1;
                 selectedTiles[0] = tile;
@@ -272,9 +275,9 @@ function drawSelectedTilesOutline(view, ctx, level) {
         var tilex = tile % level.width;
         var tiley = Math.floor(tile / level.width);
 
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "blue";
         ctx.setLineDash([]);
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 2;
         ctx.strokeRect((tilex - level.width / 2) *
                         level.spritesheet.spriteWidth *
                         viewScale + viewOffset.x + view.width / 2,
