@@ -65,7 +65,7 @@ function startEditor(left, right, view, level) {
 
             case 2: // pages (untested)
                 scrollAmountY = e.deltaY * 40;
-                scrollAmountX = e.deltaX * 18;
+                scrollAmountX = e.deltaX * 40;
                 break;
         }
 
