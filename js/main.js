@@ -97,6 +97,7 @@ window.addEventListener("load", function() {
     createnewButton.addEventListener("click", function() {
 
         var spritesheetInput = document.getElementById("spritesheet-input"),
+            nameInput = document.getElementById("name-input"),
             lvldim = document.getElementById("lvldim"),
             begindiv = document.getElementById("begin");
 
@@ -105,7 +106,7 @@ window.addEventListener("load", function() {
             begindiv.style.display = "none";
             lvldim.style.display = "inline-block";
 
-            level = new Level();
+            level = new Level(nameInput.value || "Unnamed");
 
         } else begindiv.classList.add("missing-field");
     });

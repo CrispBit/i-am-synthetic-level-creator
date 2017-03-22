@@ -15,7 +15,7 @@ function Level(name, spritesheet, width, height, data, bg, levelfile) {
     name = typeof name !== "undefined" ? name : "Unnamed";
     spritesheet = typeof spritesheet !== "undefined" ? spritesheet : new Spritesheet();
 
-    this.name = name || "Unnamed";
+    this.name = name;
     this.spritesheet = spritesheet;
     this.width = width;
     this.height = height;
