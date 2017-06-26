@@ -33,9 +33,11 @@ events: # list of events
         # whether or not user is forced to see it
         obligatory: true # optional
 
-        # coordinates of event
-        atX: 13
-        atY: 5 # this only matters if not obligatory
+        # coordinates of event rectangle
+        topX: 13
+        topY: 5 # this only matters if not obligatory
+        bottomX: 26
+        bottomY: 10 #this only matters if not obligatory
 
         text: # list of texts
             - !text
@@ -49,3 +51,14 @@ events: # list of events
                 effect: 1 # optional
 
                 speed: 1.0 # optional
+    - !event
+
+        # 2 = Level Change
+        # coordinates of event rectangle
+        topX: 0
+        topY: 0
+        bottomX: 5
+        bottomY: 5
+
+        # level to jump to
+        levelid: 1
