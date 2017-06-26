@@ -41,6 +41,7 @@ events: # list of events
             - !text
                 str: "stringytexts"
                 skippable: false # optional
+                sound: metalking.wav #optional
 
                 # Text effects
                 # 1 = Shake
