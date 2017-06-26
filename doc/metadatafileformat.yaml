@@ -6,6 +6,7 @@
 
 name: "Name of Level"
 levelfile: "name_of_levelfile.dat"
+musicfile: "name_of_musicfile.wav"
 contextimages: # optional
     - "firstimage.png"
     - "secondimage.png"
