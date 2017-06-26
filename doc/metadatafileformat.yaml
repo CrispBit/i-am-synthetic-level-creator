@@ -27,6 +27,10 @@ spritesheet: !spritesheet
 
 background: "name_of_background_image.png"
 
+# coordinates of player character on level enter 
+enterX: 0
+enterY: 20
+
 events: # list of events
     - !event
 
