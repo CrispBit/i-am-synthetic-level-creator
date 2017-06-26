@@ -6,6 +6,9 @@
 
 name: "Name of Level"
 levelfile: "name_of_levelfile.dat"
+contextimages: # optional
+    - "firstimage.png"
+    - "secondimage.png"
 
 energyon: true # optional
 
