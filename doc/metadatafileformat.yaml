@@ -30,9 +30,12 @@ events: # list of events
         # 1 = Chat Bubble
         type: 1
 
-        # coordinates of event (exact behavior yet to be determined)
+        # whether or not user is forced to see it
+        obligatory: true # optional
+
+        # coordinates of event
         atX: 13
-        atY: 5
+        atY: 5 # this only matters if not obligatory
 
         text: # list of texts
             - !text
