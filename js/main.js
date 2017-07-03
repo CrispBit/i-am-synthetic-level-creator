@@ -101,12 +101,32 @@ window.addEventListener("load", function() {
             lvldim = document.getElementById("lvldim"),
             begindiv = document.getElementById("begin");
 
-        if (spritesheetInput.files.length > 0) {
+        level = new Level(nameInput.value || "Unnamed");
+
+        function next(thing, success) {
+
+            if (!success) {
+                alert("There was an error loading the " + thing);
+                return;
+            }
+
+            var spritesheetConfig = document.getElementById("spritesheet-config");
 
             begindiv.style.display = "none";
             lvldim.style.display = "inline-block";
 
-            level = new Level(nameInput.value || "Unnamed");
+        }
+
+
+        if (spritesheetInput.files.length > 0) {
+
+            // load spritesheet
+            var spritesheetURL = URL.createObjectURL(spritesheetInput.files[0]);
+            var spritesheetImage = new Image();
+            spritesheetImage.src = spritesheetURL;
+            level.spritesheet.image = spritesheetImage;
+            spritesheetImage.onload = next.bind(null, "spritesheet", true);
+            spritesheetImage.onerror = next.bind(null, "spritesheet", false);
 
         } else begindiv.classList.add("missing-field");
     });
